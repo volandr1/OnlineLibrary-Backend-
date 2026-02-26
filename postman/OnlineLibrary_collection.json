@@ -1,0 +1,161 @@
+﻿{
+  "info": {
+    "name": "Online Library API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"admin@test.com\",\n    \"password\": \"Admin123!\"\n}",
+              "options": { "json": { "language": "json" } }
+            },
+            "url": { "raw": "{{baseUrl}}/api/Auth/register", "host": ["{{baseUrl}}"], "path": ["api", "Auth", "register"] }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.collectionVariables.set(\"token\", jsonData.token);",
+                  "    console.log(\"Токен автоматически сохранен!\");",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"admin@test.com\",\n    \"password\": \"Admin123!\"\n}",
+              "options": { "json": { "language": "json" } }
+            },
+            "url": { "raw": "{{baseUrl}}/api/Auth/login", "host": ["{{baseUrl}}"], "path": ["api", "Auth", "login"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "Get All Books (Public)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/Books", "host": ["{{baseUrl}}"], "path": ["api", "Books"] }
+          }
+        },
+        {
+          "name": "Get Single Book (Public)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/Books/2", "host": ["{{baseUrl}}"], "path": ["api", "Books", "2"] }
+          }
+        },
+        {
+          "name": "Search Books (Public)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/Books/search?title=Метро",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "Books", "search"],
+              "query": [{ "key": "title", "value": "Метро" }]
+            }
+          }
+        },
+        {
+          "name": "Add Book (Admin Only)",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Ведьмак\",\n    \"description\": \"Охотник на чудовищ\",\n    \"authors\": [{ \"name\": \"Анджей Сапковский\" }],\n    \"genres\": [{ \"name\": \"Фэнтези\" }]\n}",
+              "options": { "json": { "language": "json" } }
+            },
+            "url": { "raw": "{{baseUrl}}/api/Books", "host": ["{{baseUrl}}"], "path": ["api", "Books"] }
+          }
+        },
+        {
+          "name": "Delete Book (Admin Only)",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/Books/4", "host": ["{{baseUrl}}"], "path": ["api", "Books", "4"] }
+          }
+        },
+        {
+          "name": "Export to CSV (Admin Only)",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/Books/export/csv", "host": ["{{baseUrl}}"], "path": ["api", "Books", "export", "csv"] }
+          }
+        },
+        {
+          "name": "Take Book",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/Books/take/2", "host": ["{{baseUrl}}"], "path": ["api", "Books", "take", "2"] }
+          }
+        },
+        {
+          "name": "Return Book",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/Books/return/2", "host": ["{{baseUrl}}"], "path": ["api", "Books", "return", "2"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Favorites",
+      "item": [
+        {
+          "name": "Get My Favorites",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/Books/favorites", "host": ["{{baseUrl}}"], "path": ["api", "Books", "favorites"] }
+          }
+        },
+        {
+          "name": "Add to Favorites",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/Books/favorites/2", "host": ["{{baseUrl}}"], "path": ["api", "Books", "favorites", "2"] }
+          }
+        },
+        {
+          "name": "Remove from Favorites",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/Books/favorites/2", "host": ["{{baseUrl}}"], "path": ["api", "Books", "favorites", "2"] }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5234" },
+    { "key": "token", "value": "" }
+  ]
+}

@@ -1,0 +1,9 @@
+﻿[Bb]in/
+[Oo]bj/
+
+.idea/
+
+*.user
+appsettings.Development.json
+
+*.db

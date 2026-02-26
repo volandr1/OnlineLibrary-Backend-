@@ -1,0 +1,39 @@
+﻿@startuml
+entity "Users" {
+  * id : integer
+  --
+  * email : string
+  * passwordHash : string
+  * role : string
+}
+
+entity "Books" {
+  * id : integer
+  --
+  * title : string
+  description : text
+  userId : integer <<FK>>
+}
+
+entity "Authors" {
+  * id : integer
+  --
+  * name : string
+}
+
+entity "Genres" {
+  * id : integer
+  --
+  * name : string
+}
+
+entity "UserFavoriteBooks" {
+  * userId : integer <<FK>>
+  * bookId : integer <<FK>>
+}
+
+Users ||--o{ Books : "borrows"
+Books }|--|{ Authors : "written by"
+Books }|--|{ Genres : "classified as"
+Users }|--|{ Books : "favorites"
+@endum

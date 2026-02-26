@@ -1,0 +1,28 @@
+﻿@startuml
+package "Models" {
+    class User {
+        +int Id
+        +string Email
+        +List<Book> FavoriteBooks
+    }
+    class Book {
+        +int Id
+        +string Title
+        +List<Author> Authors
+        +List<Genre> Genres
+    }
+}
+
+package "Controllers" {
+    class BooksController {
+        -LibraryDbContext _context
+        +GetBooks()
+        +AddBook()
+        +AddToFavorites()
+        +ExportToCsv()
+    }
+}
+
+BooksController --> User
+BooksController --> Book
+@endum
